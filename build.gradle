@@ -2,9 +2,15 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "jacoco"
 	id "org.sonarqube" version "4.2.1.3168"
-
 }
+jacocoTestReport {
+	reports {
+		xml.enabled true
+	}
+}
+
 sonar {
 	properties {
 		property "sonar.projectKey", "EdwinSandoval_microservices"
