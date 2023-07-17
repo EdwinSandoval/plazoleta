@@ -8,8 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 @Entity
 @Table(name = "pedido_platos")
-@NoArgsConstructor//constructor vacio
-@AllArgsConstructor//constructor lleno
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Pedido_PlatosEntity {

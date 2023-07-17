@@ -2,7 +2,6 @@ package com.example.serviceplazoleta.infraestructure.out.jpa.entity;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,8 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "plato")
-@NoArgsConstructor//constructor vacio
-//@AllArgsConstructor//constructor lleno
+@NoArgsConstructor
 @Getter
 @Setter
 public class PlatoEntity {
@@ -46,7 +44,6 @@ public class PlatoEntity {
     private Boolean activo;
 
     @ManyToOne
-//    @NotNull(message = "Debes especificar la categoria")
     @JoinColumn(name = "idCategoria")
     private CategoriaEntity categoria;
 
@@ -71,5 +68,4 @@ public class PlatoEntity {
         this.pedidoPlatos = pedidoPlatos;
     }
 
-    //idcategoria,idrestaurante
 }

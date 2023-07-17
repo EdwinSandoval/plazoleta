@@ -1,15 +1,11 @@
 package com.example.serviceplazoleta.infraestructure.out.jpa.adapter;
 
-import com.example.serviceplazoleta.application.dto.response.User.UserResponseDto;
 import com.example.serviceplazoleta.domain.model.RestauranteModel;
 import com.example.serviceplazoleta.domain.spi.IRestaurantePersistencePort;
-import com.example.serviceplazoleta.infraestructure.client.IUserFeign;
 import com.example.serviceplazoleta.infraestructure.exception.NoDataFoundException;
-import com.example.serviceplazoleta.infraestructure.exception.NotRolException;
 import com.example.serviceplazoleta.infraestructure.out.jpa.entity.RestauranteEntity;
 import com.example.serviceplazoleta.infraestructure.out.jpa.mapper.IRestauranteEntityMapper;
 import com.example.serviceplazoleta.infraestructure.out.jpa.repository.IRestauranteRepository;
-//import com.example.serviceplazoleta.infraestructure.out.jpa.repository.Usuario.IUsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

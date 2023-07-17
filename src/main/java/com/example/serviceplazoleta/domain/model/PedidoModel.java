@@ -1,10 +1,6 @@
 package com.example.serviceplazoleta.domain.model;
 
-
-
 import java.util.Date;
-
-
 public class PedidoModel {
 
     private Long id;

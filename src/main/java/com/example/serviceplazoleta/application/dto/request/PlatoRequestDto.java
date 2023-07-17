@@ -1,6 +1,5 @@
 package com.example.serviceplazoleta.application.dto.request;
 
-import com.example.serviceplazoleta.application.dto.response.CategoriaResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 

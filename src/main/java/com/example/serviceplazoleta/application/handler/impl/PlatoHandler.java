@@ -8,7 +8,6 @@ import com.example.serviceplazoleta.application.handler.IPlatoHandler;
 import com.example.serviceplazoleta.application.mapper.IPlatoRequestMapper;
 import com.example.serviceplazoleta.application.mapper.IPlatoResponseMapper;
 import com.example.serviceplazoleta.domain.api.IPlatoServicePort;
-import com.example.serviceplazoleta.domain.model.CategoriaModel;
 import com.example.serviceplazoleta.domain.model.PlatoModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,6 @@ public class PlatoHandler  implements IPlatoHandler {
     @Override
     public PlatoResponseDto guardarPlato(PlatoRequestDto platoRequestDto) {
         PlatoModel platoModel = platoRequestMapper.toPlato(platoRequestDto);
-//        platoServicePort.guardarPlato(platoModel);
         return platoResponseMapper.toResponse(platoServicePort.guardarPlato(platoModel));
     }
 
@@ -51,13 +49,8 @@ public class PlatoHandler  implements IPlatoHandler {
            platoModel.setActivo(platoAntiguo.isActivo());
            platoModel.setCategoria(platoAntiguo.getCategoria());
            platoModel.setRestaurant(platoAntiguo.getRestaurant());
-
-
-
            platoServicePort.actualizarPlato(platoModel);
        }
-
-
     }
 
     @Override

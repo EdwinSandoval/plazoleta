@@ -13,7 +13,6 @@ public interface IPlatoPersistencePort {
 
     void actualizarPlato(PlatoModel platoModel);
 
-//    PlatoModel buscarPlatoId(Long idPlato);
     PlatoModel buscarPlatoId(Long idPlato);
 
 }

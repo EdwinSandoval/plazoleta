@@ -13,7 +13,6 @@ import com.example.serviceplazoleta.domain.usecase.PedidoUseCase;
 import com.example.serviceplazoleta.domain.usecase.PlatoUseCase;
 import com.example.serviceplazoleta.domain.usecase.RestauranteUseCase;
 import com.example.serviceplazoleta.infraestructure.client.IUserFeign;
-import com.example.serviceplazoleta.infraestructure.input.rest.RestauranteRestController;
 import com.example.serviceplazoleta.infraestructure.out.jpa.adapter.CategoriaJpaAdapter;
 import com.example.serviceplazoleta.infraestructure.out.jpa.adapter.PedidoJpaAdapter;
 import com.example.serviceplazoleta.infraestructure.out.jpa.adapter.PlatoJpaAdapter;
@@ -49,8 +48,6 @@ public class BeanConfiguration {
         return new CategoriaUseCase(categoriaPersistencePort());
     }
 
-    //****************************************************************************
-
     private final IPedidoRepository pedidoRepository;
     private final IPedidoEntityMapper pedidoEntityMapper;
     @Bean
@@ -65,12 +62,9 @@ public class BeanConfiguration {
         return new PedidoUseCase(pedidoPersistencePort());
     }
 
-    //****************************************************************************
-
     private final IPlatoRepository platoRepository;
     private final IPlatoEntityMapper platoEntityMapper;
     private final IUserFeign iUserFeign;
-//    private final RestauranteRestController restauranteRestController;
     @Bean
     public IPlatoPersistencePort platoPersistencePort() {
 
@@ -82,8 +76,6 @@ public class BeanConfiguration {
 
         return new PlatoUseCase(platoPersistencePort());
     }
-
-    //****************************************************************************
 
     private final IRestauranteRepository restauranteRepository;
     private final IRestauranteEntityMapper restauranteEntityMapper;
@@ -99,22 +91,5 @@ public class BeanConfiguration {
 
         return new RestauranteUseCase(restaurantePersistencePort());
     }
-
-
-//    private final IRestauranteRepository restauranteRepository;
-//    private final IRestauranteEntityMapper restauranteEntityMapper;
-//    //    private final RestTemplate restTemplate;
-////    private final IUserRestaurante iUserRestaurante;
-//    @Bean
-//    public IUserRestaurante irestaurantePersistencePort() {
-//
-//        return new RestauranteJpaAdapter(restauranteRepository, restauranteEntityMapper);
-//    }
-//
-//    @Bean
-//    public IRestauranteServicePort restauranteServicePort() {
-//
-//        return new RestauranteUseCase(restaurantePersistencePort());
-//    }
 
 }

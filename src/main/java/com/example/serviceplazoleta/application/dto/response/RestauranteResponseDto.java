@@ -1,8 +1,5 @@
 package com.example.serviceplazoleta.application.dto.response;
 
-import com.example.serviceplazoleta.application.dto.response.User.UserResponseDto;
-import com.example.serviceplazoleta.domain.model.CategoriaModel;
-import com.example.serviceplazoleta.domain.model.RestauranteModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

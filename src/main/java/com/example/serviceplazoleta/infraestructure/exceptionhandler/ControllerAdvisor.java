@@ -17,15 +17,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class ControllerAdvisor {
 
-//    private static final String MESSAGE = "message";
-//
-//    @ExceptionHandler(NoDataFoundException.class)
-//    public ResponseEntity<Map<String, String>> handleNoDataFoundException(
-//            NoDataFoundException ignoredNoDataFoundException) {
-//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                .body(Collections.singletonMap(MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
-//    }
-
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String,String> handleValidateException(MethodArgumentNotValidException ex){

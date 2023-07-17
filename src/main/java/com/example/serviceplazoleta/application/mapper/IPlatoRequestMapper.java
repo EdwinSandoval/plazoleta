@@ -13,5 +13,4 @@ import org.mapstruct.ReportingPolicy;
 public interface IPlatoRequestMapper {
     PlatoModel toPlato(PlatoRequestDto platoRequestDto);
     PlatoModel toActualizarPlato(ActualizarPlatoRequest actualizarPlatoRequest);
-   // PlatoModel toActualizarEstadoPlato(ActualizarEstadoPlatoRequest estado);
 }
