@@ -15,7 +15,11 @@ sonar {
 	properties {
 		property "sonar.projectKey", "EdwinSandoval_microservices"
 		property "sonar.organization", "edwinsandoval"
-		property "sonar.host", "https://sonarcloud.io"
+		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+		property "sonar.token", "87cae044976d391bbeb0c6de629268524652391d"
+		property "sonar.junit.reportPaths", "service-plazoleta/build/test-results/*/TEST-*.xml"
+		property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/infrastructure/**/*"
 	}
 }
 group = 'com.example'
