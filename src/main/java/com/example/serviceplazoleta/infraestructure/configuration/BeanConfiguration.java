@@ -1,5 +1,6 @@
 package com.example.serviceplazoleta.infraestructure.configuration;
 
+import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.example.serviceplazoleta.domain.api.ICategoriaServicePort;
 import com.example.serviceplazoleta.domain.api.IPedidoServicePort;
 import com.example.serviceplazoleta.domain.api.IPlatoServicePort;
@@ -65,6 +66,7 @@ public class BeanConfiguration {
     private final IPlatoRepository platoRepository;
     private final IPlatoEntityMapper platoEntityMapper;
     private final IUserFeign iUserFeign;
+
     @Bean
     public IPlatoPersistencePort platoPersistencePort() {
 

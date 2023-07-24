@@ -20,6 +20,10 @@ sonar {
 		property "sonar.token", "87cae044976d391bbeb0c6de629268524652391d"
 		property "sonar.junit.reportPaths", "service-plazoleta/build/test-results/*/TEST-*.xml"
 		property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/infrastructure/**/*"
+		//property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/application/**"
+		//property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/domain/**"
+		//property 'sonar.exclusions', 'src/main/java/com/example/serviceplazoleta/infraestructure/configuration/**, src/main/java/com/example/serviceplazoleta/infraestructure/exception/**'
+
 	}
 }
 group = 'com.example'
@@ -50,6 +54,11 @@ dependencies {
 
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+	//implementation 'com.amazonaws:aws-sdk-java:1.12.508'
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.12.508'
+	implementation 'com.amazonaws:aws-java-sdk-cognitoidp:1.12.508'
+	implementation 'software.amazon.awssdk:cognitoidentityprovider:2.17.66'
 //	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 }
 
