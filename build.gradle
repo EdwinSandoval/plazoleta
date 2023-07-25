@@ -19,10 +19,16 @@ sonar {
 		property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
 		property "sonar.token", "87cae044976d391bbeb0c6de629268524652391d"
 		property "sonar.junit.reportPaths", "service-plazoleta/build/test-results/*/TEST-*.xml"
-		property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/infrastructure/**/*"
-		//property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/application/**"
-		//property "sonar.exclusions", "src/main/java/com/example/serviceplazoleta/domain/**"
-		//property 'sonar.exclusions', 'src/main/java/com/example/serviceplazoleta/infraestructure/configuration/**, src/main/java/com/example/serviceplazoleta/infraestructure/exception/**'
+
+		property ("sonar.exclusions","src/main/java/com/example/serviceplazoleta/ServicePlazoletaApplication.java,src/main/java/com/example/serviceplazoleta/application/**,src/main/java/com/example/serviceplazoleta/aws/Model/**," +
+				"src/main/java/com/example/serviceplazoleta/domain/api/**,src/main/java/com/example/serviceplazoleta/domain/spi/**," +
+				"src/main/java/com/example/serviceplazoleta/domain/exception/**,src/main/java/com/example/serviceplazoleta/domain/model/**," +
+				"src/main/java/com/example/serviceplazoleta/infraestructure/client/**," +
+				"src/main/java/com/example/serviceplazoleta/infraestructure/configuration/**," +
+				"src/main/java/com/example/serviceplazoleta/infraestructure/exception/**," +
+				"src/main/java/com/example/serviceplazoleta/infraestructure/exceptionhandler/**,src/main/java/com/example/serviceplazoleta/infraestructure/input/rest/*.java," +
+				"src/main/java/com/example/serviceplazoleta/infraestructure/out/jpa/repository/**,src/main/java/com/example/serviceplazoleta/infraestructure/out/jpa/entity/**,src/main/java/com/example/serviceplazoleta/infraestructure/out/jpa/mapper/**" )
+
 
 	}
 }
