@@ -1,44 +1,27 @@
-# Gradle
-# Build your Java project and run tests with Gradle using a Gradle wrapper script.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+trigger:
+  branches:
+    include:
+      - devops  # Define las ramas que activarán el pipeline cuando haya cambios
 
-name: SonarCloud
-on:
-  push:
-    branches:
-      - devops
-  pull_request:
-    types: [opened, synchronize, reopened]
-jobs:
-  build:
-    name: Build and analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: 11
-          distribution: 'zulu' # Alternative distribution options are available
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - name: Change wrapper permissions
-        run: chmod +x ./gradlew
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew build
+pool:
+  vmImage: 'ubuntu-latest'  # Imagen de la máquina virtual en la que se ejecutará el pipeline
+
+steps:
+  - script: './gradlew build'  # Ejecuta el comando Gradle para compilar el proyecto
+    displayName: 'Build project'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: 'JUnit'  # Formato de los resultados de las pruebas
+      testResultsFiles: '**/TEST-*.xml'  # Ruta de los archivos de resultados de las pruebas
+
+  - task: SonarQubePrepare@4
+    inputs:
+      SonarQube: 'SonarCloud'  # Opción para SonarQube/SonarCloud
+      scannerMode: 'CLI'  # Modo CLI para ejecutar SonarQube desde línea de comandos
+      projectKey: 'EdwinSandoval_microservices'  # Clave del proyecto en SonarQube/SonarCloud
+      projectName: 'EdwinSandoval_microservices'  # Nombre del proyecto en SonarQube/SonarCloud
+      extraProperties: |  # Propiedades adicionales para SonarQube (opcional)
+        sonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
+        sonar.exclusions=src/main/java/com/example/serviceplazoleta/ServicePlazoletaApplication.java,src/main/java/com/example/serviceplazoleta/application/**,src/main/java/com/example/serviceplazoleta/aws/Model/**,src/main/java/com/example/serviceplazoleta/domain/api/**,src/main/java/com/example/serviceplazoleta/domain/spi/**,src/main/java/com/example/serviceplazoleta/domain/exception/**,src/main/java/com/example/serviceplazoleta/domain/model/**,src/main/java/com/example/serviceplazoleta/infraestructure/client/**,src/main/java/com/example/serviceplazoleta/infraestructure/configuration/**,src/main/java/com/example/serviceplazoleta/infraestructure/exception/**,src/main/java/com/example/servicepl
