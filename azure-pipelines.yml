@@ -1,27 +1,32 @@
+# Nombre del pipeline
+name: Azure-Gradle-Pipeline
+
+# Trigger del pipeline (por ejemplo, en cada cambio en la rama main)
 trigger:
   branches:
     include:
-      - devops  # Define las ramas que activarán el pipeline cuando haya cambios
+      - main
 
+# Pools de ejecución (puedes cambiarlo según tus necesidades)
 pool:
-  vmImage: 'ubuntu-latest'  # Imagen de la máquina virtual en la que se ejecutará el pipeline
+  vmImage: 'ubuntu-latest'
 
-steps:
-  - script: './gradlew build'  # Ejecuta el comando Gradle para compilar el proyecto
-    displayName: 'Build project'
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
+# Pasos del pipeline
+jobs:
+- job: Build
+  displayName: 'Build and Test'
+  steps:
+  - task: UseGradle@2
     inputs:
-      testResultsFormat: 'JUnit'  # Formato de los resultados de las pruebas
-      testResultsFiles: '**/TEST-*.xml'  # Ruta de los archivos de resultados de las pruebas
+      gradleWrapperFile: 'gradlew'
+      tasks: 'build'
 
-  - task: SonarQubePrepare@4
+- job: SonarQube
+  displayName: 'SonarQube Analysis'
+  steps:
+  - task: UseGradle@2
     inputs:
-      SonarQube: 'SonarCloud'  # Opción para SonarQube/SonarCloud
-      scannerMode: 'CLI'  # Modo CLI para ejecutar SonarQube desde línea de comandos
-      projectKey: 'EdwinSandoval_microservices'  # Clave del proyecto en SonarQube/SonarCloud
-      projectName: 'EdwinSandoval_microservices'  # Nombre del proyecto en SonarQube/SonarCloud
-      extraProperties: |  # Propiedades adicionales para SonarQube (opcional)
-        sonar.coverage.jacoco.xmlReportPaths=build/reports/jacoco/test/jacocoTestReport.xml
-        sonar.exclusions=src/main/java/com/example/serviceplazoleta/ServicePlazoletaApplication.java,src/main/java/com/example/serviceplazoleta/application/**,src/main/java/com/example/serviceplazoleta/aws/Model/**,src/main/java/com/example/serviceplazoleta/domain/api/**,src/main/java/com/example/serviceplazoleta/domain/spi/**,src/main/java/com/example/serviceplazoleta/domain/exception/**,src/main/java/com/example/serviceplazoleta/domain/model/**,src/main/java/com/example/serviceplazoleta/infraestructure/client/**,src/main/java/com/example/serviceplazoleta/infraestructure/configuration/**,src/main/java/com/example/serviceplazoleta/infraestructure/exception/**,src/main/java/com/example/servicepl
+      gradleWrapperFile: 'gradlew'
+      tasks: 'sonarqube'
+
+# Puedes agregar más pasos según tus necesidades, como despliegue a servicios en la nube, publicación de artefactos, etc.
