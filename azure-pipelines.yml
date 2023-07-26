@@ -1,32 +1,25 @@
-# Nombre del pipeline
-name: Azure-Gradle-Pipeline
+# Nombre del pipeline. Cambiar "My CI Pipeline" a un nombre descriptivo.
+name: My CI Pipeline
 
-# Trigger del pipeline (por ejemplo, en cada cambio en la rama main)
+# El agente en el que se ejecutará el pipeline. Puedes especificar "ubuntu-latest" u otros disponibles.
 trigger:
   branches:
     include:
-      - main
+      - master  # Configura aquí la rama que quieres que active el CI.
 
-# Pools de ejecución (puedes cambiarlo según tus necesidades)
-pool:
-  vmImage: 'ubuntu-latest'
+# Puedes especificar variables aquí si las necesitas en tus tareas.
 
-# Pasos del pipeline
-jobs:
-- job: Build
-  displayName: 'Build and Test'
-  steps:
-  - task: UseGradle@2
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'build'
+# Etapas del pipeline.
+stages:
+  - stage: Build
+    jobs:
+      - job: BuildJob
+        displayName: Build Job
+        pool:
+          vmImage: 'ubuntu-latest'  # Configura el agente que quieres usar.
 
-- job: SonarQube
-  displayName: 'SonarQube Analysis'
-  steps:
-  - task: UseGradle@2
-    inputs:
-      gradleWrapperFile: 'gradlew'
-      tasks: 'sonarqube'
+        steps:
+          - script: echo 'Ejecutando tareas de construcción...'
+            displayName: 'Construir'
 
-# Puedes agregar más pasos según tus necesidades, como despliegue a servicios en la nube, publicación de artefactos, etc.
+# Puedes agregar más etapas y trabajos según tus necesidades.
