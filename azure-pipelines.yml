@@ -5,7 +5,7 @@ name: My CI Pipeline
 trigger:
   branches:
     include:
-      - master  # Configura aquí la rama que quieres que active el CI.
+      - devops  # Configura aquí la rama que quieres que active el CI.
 
 # Puedes especificar variables aquí si las necesitas en tus tareas.
 
