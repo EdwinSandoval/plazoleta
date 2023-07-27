@@ -87,6 +87,7 @@ jobs:
           docker push ${{env.AWS_ECR_REPO_LINK}}:latest
 
   deploy-eb:
+    needs: deploy-ecr
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
