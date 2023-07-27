@@ -51,12 +51,6 @@ jobs:
     fetchDepth: 0
 
   #-----
-  - script: chmod +x ./gradlew
-    displayName: Change wrapper permissions
- 
-
-  - script: ./gradlew build
-    displayName: Build and analyze
 
   - task: CopyFiles@2
     displayName: Copy build artifacts
