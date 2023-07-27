@@ -1,24 +1,101 @@
-# Gradle
-# Build your Java project and run tests with Gradle using a Gradle wrapper script.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+# Nombre del pipeline. Cambiar "My CI Pipeline" a un nombre descriptivo.
+name: My CI Pipeline2
 
+# El agente en el que se ejecutará el pipeline. Puedes especificar "ubuntu-latest" u otros disponibles.
 trigger:
-- devops
-- main
+  branches:
+    include:
+      - devops  # Configura aquí la rama que quieres que active el CI.
+      - main
+  
 
-pool:
-  vmImage: ubuntu-latest
+jobs:
+- job: Build_and_analyze
+  displayName: Build and analyze
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    fetchDepth: 0
 
-steps:
-- task: Gradle@2
-  inputs:
-    workingDirectory: ''
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
+  - script: |
+      sudo apt-get update
+      sudo apt-get install openjdk-11-jdk
+      echo "JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64" | sudo tee -a /etc/environment
+      echo "export JAVA_HOME" | sudo tee -a /etc/environment
+      echo "export PATH=$PATH:$JAVA_HOME/bin" | sudo tee -a /etc/environment
+      sudo ln -s /usr/lib/jvm/java-11-openjdk-amd64/bin/java /usr/bin/java
+      java -version
+    displayName: Set up JDK 11
+
+  - task: Cache@2
+    displayName: Cache SonarCloud packages
+    inputs:
+      key: '$(Agent.OS)-sonar'
+      path: ~/.sonar/cache
+
+  - task: Cache@2
+    displayName: Cache Gradle packages
+    inputs:
+      key: '$(Agent.OS)-gradle-${{ hashFiles(''**/*.gradle'') }}'
+      path: ~/.gradle/caches
+
+  - script: chmod +x ./gradlew
+    displayName: Change wrapper permissions
+
+  - script: ./gradlew build
+    displayName: Build and analyze
+    env:
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
+      SONAR_TOKEN: $(SONAR_TOKEN)
+
+- job: deploy-ecr
+  displayName: Deploy to ECR
+  dependsOn: Build_and_analyze
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    fetchDepth: 0
+
+  - script: |
+      # Configuración de las credenciales de AWS CLI para ECR
+      aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID) --profile ecr-user
+      aws configure set aws_secret_access_key $(AWS_SECRET_ACCESS_KEY) --profile ecr-user
+      aws ecr get-login-password --region $(AWS_REGION) | docker login --username AWS --password-stdin $(AWS_ECR_REPO_PATH)
+    displayName: Log in to Amazon ECR
+
+  - script: |
+      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $(AWS_ECR_REPO_PATH)
+      docker build -t $(AWS_ECR_REPO_NAME) .
+      docker tag $(AWS_ECR_REPO_NAME):latest $(AWS_ECR_REPO_LINK):latest
+      docker push $(AWS_ECR_REPO_LINK):latest
+    displayName: Build and push Docker image to ECR
+
+- job: deploy-eb
+  displayName: Deploy to EB
+  dependsOn: deploy-ecr
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - checkout: self
+    fetchDepth: 0
+
+  - script: |
+      # Configuración de las credenciales de AWS CLI para Elastic Beanstalk
+      aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID) --profile eb-user
+      aws configure set aws_secret_access_key $(AWS_SECRET_ACCESS_KEY) --profile eb-user
+    displayName: Configure AWS CLI for Elastic Beanstalk
+
+  - script: |
+      # Despliegue a Elastic Beanstalk
+      aws elasticbeanstalk create-application-version --application-name $(AWS_EB_APPLICATION) --version-label 'app-plazoleta-v' --source-bundle S3Bucket=my-s3-bucket,S3Key=my-app-package.zip --region $(AWS_REGION) --profile eb-user
+      aws elasticbeanstalk update-environment --environment-name $(AWS_EB_ENVIRONMENT) --version-label 'app-plazoleta-v' --region $(AWS_REGION) --profile eb-user
+    displayName: Deploy to Elastic Beanstalk
+
+# Puedes especificar variables aquí si las necesitas en tus tareas.
+
+# Etapas del pipeline.
+
+
+# Puedes agregar más etapas y trabajos según tus necesidades.
