@@ -28,17 +28,7 @@ jobs:
       java -version
     displayName: Set up JDK 11
 
-  - task: Cache@2
-    displayName: Cache SonarCloud packages
-    inputs:
-      key: '$(Agent.OS)-sonar'
-      path: ~/.sonar/cache
-
-  - task: Cache@2
-    displayName: Cache Gradle packages
-    inputs:
-      key: '$(Agent.OS)-gradle-${{ hashFiles(''**/*.gradle'') }}'
-      path: ~/.gradle/caches
+ 
 
   - script: chmod +x ./gradlew
     displayName: Change wrapper permissions
@@ -48,6 +38,8 @@ jobs:
     env:
       GITHUB_TOKEN: $(GITHUB_TOKEN)
       SONAR_TOKEN: $(SONAR_TOKEN)
+
+# Configura aquí deploy ecr.
 
 - job: deploy-ecr
   displayName: Deploy to ECR
