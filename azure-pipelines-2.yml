@@ -50,6 +50,29 @@ jobs:
   - checkout: self
     fetchDepth: 0
 
+  #-----
+  - script: chmod +x ./gradlew
+    displayName: Change wrapper permissions
+ 
+
+  - script: ./gradlew build
+    displayName: Build and analyze
+
+  - task: CopyFiles@2
+    displayName: Copy build artifacts
+    inputs:
+        SourceFolder: 'build/libs'
+        Contents: '**'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish build artifacts
+    inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+#------
+
   - script: |
       # Configuración de las credenciales de AWS CLI para ECR
       aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID) --profile ecr-user
