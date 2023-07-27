@@ -41,7 +41,7 @@ jobs:
 
 # Configura aquí deploy ecr.
 
-- job: deploy-ecr
+- job: deploy_ecr
   displayName: Deploy to ECR
   dependsOn: Build_and_analyze
   pool:
@@ -64,7 +64,7 @@ jobs:
       docker push $(AWS_ECR_REPO_LINK):latest
     displayName: Build and push Docker image to ECR
 
-- job: deploy-eb
+- job: deploy_eb
   displayName: Deploy to EB
   dependsOn: deploy-ecr
   pool:
