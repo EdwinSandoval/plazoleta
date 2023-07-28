@@ -13,7 +13,7 @@ env:
   AWS_REGION: 'us-east-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_ECR_REPO_NAME: 'plazoleta-ecs'
+  AWS_ECR_REPO_NAME: 'v4'
   AWS_ECR_REPO_LINK: '848299491183.dkr.ecr.us-east-1.amazonaws.com/plazoleta-ecs'
   AWS_ECR_REPO_PATH: '848299491183.dkr.ecr.us-east-1.amazonaws.com'
   AWS_EB_ENVIRONMENT: 'App-v1-env'
