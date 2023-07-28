@@ -104,7 +104,7 @@ jobs:
   
   - script: |
       # Despliegue a Elastic Beanstalk
-      aws elasticbeanstalk create-application-version --application-name $(AWS_EB_APPLICATION) --version-label 'app-plazoleta-v' --source-bundle S3Bucket=$(AWS_S3_BUCKET),S3Key=$(Build.ArtifactStagingDirectory)/drop.zip --region $(AWS_REGION)
+      aws elasticbeanstalk create-application-version --application-name 'app-prueba' --version-label 'app-plazoleta-v' --source-bundle S3Bucket=$(AWS_S3_BUCKET),S3Key=$(Build.ArtifactStagingDirectory)/drop.zip --auto-create-application
      # aws elasticbeanstalk update-environment --environment-name $(AWS_EB_ENVIRONMENT) --version-label $(Build.BuildNumber)
     displayName: Deploy to Elastic Beanstalk
 
