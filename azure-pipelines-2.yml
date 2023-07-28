@@ -1,4 +1,6 @@
 # Nombre del pipeline. Cambiar "My CI Pipeline" a un nombre descriptivo.
+variables:
+  system.debug: true
 name: My CI Pipeline
 
 # El agente en el que se ejecutará el pipeline. Puedes especificar "ubuntu-latest" u otros disponibles.
