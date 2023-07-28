@@ -87,26 +87,7 @@ jobs:
       docker push $(AWS_ECR_REPO_LINK):latest
     displayName: Build and push Docker image to ECR
 
-- job: deploy_eb
-  displayName: Deploy to EB
-  dependsOn: deploy_ecr
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - checkout: self
-    fetchDepth: 0
 
-  - script: |
-      # Configuración de las credenciales de AWS CLI para Elastic Beanstalk
-      aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID) --profile eb-user
-      aws configure set aws_secret_access_key $(AWS_SECRET_ACCESS_KEY) --profile eb-user
-    displayName: Configure AWS CLI for Elastic Beanstalk
-  
-  - script: |
-      # Despliegue a Elastic Beanstalk
-      aws elasticbeanstalk create-application-version --application-name $(AWS_EB_APPLICATION) --version-label 'app-plazoleta-v' --source-bundle S3Bucket=$(AWS_S3_BUCKET),S3Key=$(Build.ArtifactStagingDirectory)/drop.zip --region $(AWS_REGION) --profile eb-user
-      aws elasticbeanstalk update-environment --environment-name $(AWS_EB_ENVIRONMENT) --version-label 'app-plazoleta-v' --region $(AWS_REGION) --profile eb-user
-    displayName: Deploy to Elastic Beanstalk
 
 # Puedes especificar variables aquí si las necesitas en tus tareas.
 
