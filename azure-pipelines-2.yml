@@ -1,5 +1,7 @@
 # Nombre del pipeline. Cambiar "My CI Pipeline" a un nombre descriptivo.
-name: My CI Pipeline2
+variables:
+  system.debug: true
+name: My CI Pipeline
 
 # El agente en el que se ejecutará el pipeline. Puedes especificar "ubuntu-latest" u otros disponibles.
 trigger:
@@ -101,10 +103,10 @@ jobs:
       aws configure set aws_access_key_id $(AWS_ACCESS_KEY_ID) --profile eb-user
       aws configure set aws_secret_access_key $(AWS_SECRET_ACCESS_KEY) --profile eb-user
     displayName: Configure AWS CLI for Elastic Beanstalk
-
+  
   - script: |
       # Despliegue a Elastic Beanstalk
-      aws elasticbeanstalk create-application-version --application-name $(AWS_EB_APPLICATION) --version-label 'app-plazoleta-v' --source-bundle S3Bucket=my-s3-bucket,S3Key=my-app-package.zip --region $(AWS_REGION) --profile eb-user
+      aws elasticbeanstalk create-application-version --application-name $(AWS_EB_APPLICATION) --version-label 'app-plazoleta-v' --source-bundle S3Bucket=$(AWS_S3_BUCKET),S3Key=$(Build.ArtifactStagingDirectory)/drop.zip --region $(AWS_REGION) --profile eb-user
       aws elasticbeanstalk update-environment --environment-name $(AWS_EB_ENVIRONMENT) --version-label 'app-plazoleta-v' --region $(AWS_REGION) --profile eb-user
     displayName: Deploy to Elastic Beanstalk
 
