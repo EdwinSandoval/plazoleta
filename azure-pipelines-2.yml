@@ -60,17 +60,21 @@ jobs:
   - script: ./gradlew build
     displayName: Build and analyze
 
-  - task: CopyFiles@2
+  - script: |
+          # Copiar los archivos de build/libs a $(Build.ArtifactStagingDirectory)
+          cp -R build/libs $(Build.ArtifactStagingDirectory)
     displayName: Copy build artifacts
-    inputs:
-        SourceFolder: 'build/libs'
-        Contents: '**'
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+  - script: |
+          # Comprimir los archivos en un .zip antes de publicarlos como artefacto
+          cd $(Build.ArtifactStagingDirectory)
+          tar -czvf drop.zip *
+    displayName: Compress build artifacts
 
   - task: PublishBuildArtifacts@1
     displayName: Publish build artifacts
     inputs:
-        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/drop.zip'
         ArtifactName: 'drop'
         publishLocation: 'Container'
 #------
